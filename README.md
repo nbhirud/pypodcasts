@@ -15,10 +15,11 @@ git clone https://github.com/nbhirud/pypodcasts.git
 
 ### 1.3 `poetry install` needed some gpg key. 
 Ran the following and selected this key in next step when it prompted. This step will not be needed if you have a gpg key already. You will need to remember the gpg paraphrase for the key you select.
+More details: https://bugs.kde.org/show_bug.cgi?id=353960
 
 ```
 gpg --full-generate-key
-<!-- gpg2 --full-gen-key -->
+# gpg2 --full-gen-key  # This worked too
 ```
 
 ### 1.4 Install dependencies using poetry:
