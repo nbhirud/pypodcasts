@@ -155,6 +155,17 @@ files = [
 ]
 
 [[package]]
+name = "chime"
+version = "0.7.0"
+description = "Python sound notifications made easy."
+optional = false
+python-versions = ">=3.6,<4.0"
+files = [
+    {file = "chime-0.7.0-py3-none-any.whl", hash = "sha256:9626f8151cb008b1e0ffb7de6d1834b7013ba5fc4c4e3c9ba6e29dc9bf5feac6"},
+    {file = "chime-0.7.0.tar.gz", hash = "sha256:ba4af8934ec8bd9a89a340b4433b2e500097b979823386432be7128e0b201f0d"},
+]
+
+[[package]]
 name = "click"
 version = "8.1.7"
 description = "Composable command line interface toolkit"
@@ -1764,4 +1775,4 @@ pillow = "*"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "46ca6870e6460c2e222294e81ff6ca36b01fd5234e4d39b0b66abba43ebfed0e"
+content-hash = "b791ada9297a362a1a48139bf390e731a060142dc3b191aead15443b1c45cc5d"
