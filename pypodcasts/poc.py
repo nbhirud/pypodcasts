@@ -56,7 +56,7 @@ elif audio_filename.endswith(".mp3"):
     pass
 # pip wheel --no-cache-dir --use-pep517 "numpy (==1.23.5)"
 # poetry add numpy
-# poetry add openai-whisper
+# poetry add openai-whisper llvmlite
 
 
 # dom = ""
