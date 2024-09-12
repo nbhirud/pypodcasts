@@ -2,6 +2,10 @@
 # from urllib import request
 # from xml.dom import minidom
 import requests
+import speech_recognition as sr
+
+# CONSTANTS
+AUDIO_PATH = "pypodcasts/media/audio"
 
 podcast_channel_url = "https://talkpython.fm/subscribe/rss"
 # query_parameters = {"downloadformat": "json"}
@@ -10,9 +14,9 @@ podcast_channel_url = "https://talkpython.fm/subscribe/rss"
 response = requests.get(podcast_channel_url)
 
 
-print(response.url)
-print(response.ok)
-print(response.status_code)
+# print(response.url)
+# print(response.ok)
+# print(response.status_code)
 
 
 
@@ -22,11 +26,34 @@ print(response.status_code)
 
 content = response.content
 
-print(content)
+# print(content)
+
+
+# with open("pypodcasts/rss_tptm.rss", mode="r") as file:
+#     rssfile = file.read()
+#     print(rssfile)
 
 
 
+audio_file_url = "https://talkpython.fm/episodes/download/475/python-language-summit-2024.mp3"
+response = requests.get(audio_file_url)
+audio_filename = audio_file_url.split("/")[-1]
+audio_file_path = f"{AUDIO_PATH}/{audio_filename}"
 
+# with open(audio_file_path, mode="wb") as file:
+#     file.write(response.content)
+
+# Speech to Text:
+
+if audio_filename.endswith(".wav"):
+    r = sr.Recognizer()
+    afile = sr.AudioFile(audio_file_path)
+    with afile as source:
+        audio = r.record(source)
+        r.recognize_google(audio)
+elif audio_filename.endswith(".mp3"):
+    #TODO
+    pass
 
 
 # dom = ""
