@@ -46,7 +46,7 @@ audio_file_path = f"{AUDIO_PATH}/{audio_filename}"
 # Speech to Text:
 
 if audio_filename.endswith(".wav"):
-    r = sr.Recognizer()
+    r = sr.Recognizer() # Does not support mp3 files
     afile = sr.AudioFile(audio_file_path)
     with afile as source:
         audio = r.record(source)
@@ -54,6 +54,9 @@ if audio_filename.endswith(".wav"):
 elif audio_filename.endswith(".mp3"):
     #TODO
     pass
+# pip wheel --no-cache-dir --use-pep517 "numpy (==1.23.5)"
+# poetry add numpy
+# poetry add openai-whisper
 
 
 # dom = ""
