@@ -12,6 +12,7 @@ mypy = "^1.11.2"
 black = "^24.8.0"
 isort = "^5.13.2"
 pytest = "^8.3.2"
+requests = "^2.32.3"
 
 
 [build-system]
