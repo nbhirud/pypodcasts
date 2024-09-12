@@ -3,6 +3,17 @@
 # from xml.dom import minidom
 import requests
 import speech_recognition as sr
+import whisper
+import chime
+
+# pip install chime
+# >>> chime.success()
+# >>> chime.warning()
+# >>> chime.error()
+# >>> chime.info()
+# >>> chime.themes()
+# ['big-sur', 'chime', 'mario', 'material', 'pokemon', 'sonic', 'zelda']
+# >>> chime.theme('zelda')
 
 # CONSTANTS
 AUDIO_PATH = "pypodcasts/media/audio"
@@ -51,12 +62,18 @@ if audio_filename.endswith(".wav"):
     with afile as source:
         audio = r.record(source)
         r.recognize_google(audio)
-elif audio_filename.endswith(".mp3"):
-    #TODO
-    pass
-# pip wheel --no-cache-dir --use-pep517 "numpy (==1.23.5)"
-# poetry add numpy
-# poetry add openai-whisper llvmlite
+# elif audio_filename.endswith(".mp3"):
+#     # espnet
+#     pass
+else:
+    # openai-whisper # requires ffmpeg # https://github.com/openai/whisper # may need setuptools-rust # works better on computers with a GPU
+
+    model = whisper.load_model("base.en")
+    result = model.transcribe(audio_file_path)
+    print(result["text"])
+
+chime.success()
+print("done")
 
 
 # dom = ""
