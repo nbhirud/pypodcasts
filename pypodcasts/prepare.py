@@ -5,6 +5,8 @@
 # https://github.com/m3redithw/data-science-visualizations/blob/main/WordClouds/prepare.py
 #######################################################
 
+# TODO - Clean better. Too many unnecessary words still show up which do not add to the context like: yeah, thats. etc.
+
 
 # essential libraries
 import os 
