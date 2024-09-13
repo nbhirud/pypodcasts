@@ -21,7 +21,7 @@ from nltk.corpus import stopwords
 from pypodcasts.prepare import clean
 
 # LLM
-# import ollama
+import ollama
 
 
 
@@ -198,7 +198,13 @@ plt.imshow(wc)
 
 
 # Some LLM stuff
-
+response = ollama.chat(model='llama3.1', messages=[
+  {
+    'role': 'user',
+    'content': 'Why is the sky blue?',
+  },
+])
+print(response['message']['content'])
 
 
 chime.success()
