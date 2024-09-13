@@ -19,6 +19,8 @@ numba = "^0.60.0"
 openai-whisper = "^20231117"
 wordcloud = "^1.9.3"
 chime = "^0.7.0"
+pandas = "^2.2.2"
+nltk = "^3.9.1"
 
 
 [build-system]
