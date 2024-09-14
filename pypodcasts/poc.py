@@ -1,11 +1,15 @@
-# from xml.etree import ElementTree
+
 from urllib import request
-from xml.dom import minidom
+
+# XML parsing
+from xml.etree import ElementTree
+from xml.dom import XMLNS_NAMESPACE, minidom
+from lxml import etree
 
 import requests
 from pathlib import Path
 import chime
-from typing import TYPE_CHECKING, Dict, Iterable, List, Optional, Sequence, Tuple, Union
+from typing import TYPE_CHECKING, Dict, Iterable, List, Optional, Sequence, Tuple, Union, Set
 
 # Speech to Text
 import speech_recognition as sr
@@ -101,8 +105,8 @@ def create_wordcoud(transcript_filepath:str):
 # Also checked a few gnome apps devloped using python, and they were using sqlite too.
 # Would like to play with or try somethign more recent and faster when I find something appropriate.
 # RSS title : url
-rss_remembered = {
-    "Talk Python To Me": ["https://talkpython.fm/subscribe/rss", ]
+rss_remembered: Dict[str,Set[str]] = {
+    "Talk Python To Me": {"https://talkpython.fm/subscribe/rssx", }
 }
 
 
@@ -125,13 +129,8 @@ rss_remembered = {
 new_url = "https://talkpython.fm/subscribe/rss"
 title = list(filter(lambda x: new_url in rss_remembered[x], rss_remembered))
 title = title[0] if title  else None
-
-
-
-
-# podcast_channel_url = rss_remembered.get("Talk Python To Me")
-# # query_parameters = {"downloadformat": "json"}
-
+rss_xml_filename = ""
+rss_xml_filepath = ""
 
 if not title:
     # # response = requests.get(podcast_channel_url, params=query_parameters)
@@ -141,9 +140,26 @@ if not title:
     print(response.status_code)
     if response.ok:
         xml_url = response.url
+        if new_url != xml_url:
+            # Check if this URL already exists
+            title = list(filter(lambda x: xml_url in rss_remembered[x], rss_remembered))
+            title = title[0] if title  else None
+            if title:
+                rss_remembered[title].add(new_url)
+            else:
+                # new_url and xml_url are different. Both are absent from our dataabse. 
+                #rss_remembered[title] = {xml_url, new_url}
+                # We don't have the title at this point. So do this after we have title
+                pass
+                
+
+        else:
+            # Save the new title, url, xml etc as this is a new podcast
+            # rss_remembered[title] = {new_url}
+            # We don't have the title at this point. So do this after we have title
+            pass
 
         dom = ""
-        title = ""
         # link = ""
 
         # download the xml document
@@ -153,23 +169,47 @@ if not title:
             # link = dom.getElementsByTagName('link')[0].getAttribute('href')
             #published = dom.getElementsByTagName('published')[0].firstChild.nodeValue
 
+        rss_remembered[title] = {xml_url, new_url}
 
-        print("dom = ", dom)
+        # print("dom = ", dom)
         print("title = "" = ", title)
         # print("link = ", link)
 
         # # Parse the XML document
         # tree = ElementTree.parse(dom)
 
-        rss_xml_filename = f"{title.trim().replace(" ", "_").xml}"
+        rss_xml_filename = f"{title.strip().replace(" ", "-")}.xml"
         rss_xml_filepath = f"{RSSXML_PATH}/{rss_xml_filename}"
 
+        # with open(rss_xml_filepath, mode="w") as file:
+        #     file.write(response.content.decode(encoding="UTF-8"))
         with open(rss_xml_filepath, mode="wb") as file:
             file.write(response.content)
 
 
+        ######################################################################
+        # New code:
+        # https://stackoverflow.com/a/18308594/7524805
+        # tree = ElementTree.fromstring(response.content)
+        # print(tree)
+        # root = etree.fromstring(xml, base_url=xml_url)
+        try:
+            xmltree = etree.parse(rss_xml_filepath)
+            # print(type(xmltree))
+            xmltree: str = etree.tostring(xmltree)
+            # print(xmltree)
+        except IOError:
+            print("The file is nonexistent or not readable.")
+        except etree.XMLSyntaxError:
+            print("The file is readable, but does not contain well-formed XML.")
 
 
+        # rj = response.content.decode(encoding="UTF-8")
+        # print(rj)
+
+
+
+        exit()
 
 
 
@@ -191,7 +231,7 @@ print("BASE_DIR:",BASE_DIR)
 # audio_file_url = "https://talkpython.fm/episodes/download/475/python-language-summit-2024.mp3"
 audio_file_url = "https://talkpython.fm/episodes/download/474/python-performance-for-data-science.mp3"
 
-audio_filename = audio_file_url.split("/")[-1]
+audio_filename = f"{rss_xml_filename.split(".")[0]}_{audio_file_url.split("/")[-1]}"
 audio_filepath = f"{AUDIO_PATH}/{audio_filename}"
 
 filename_base = audio_filename.split(".")[0]
